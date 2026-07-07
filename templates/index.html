@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+
+    <!-- Ligação com o CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Menu Principal</h1>
+
+        <ul class="menu-list">
+            <li><a href="{{ url_for('cadastrar') }}">Cadastrar Produto</a></li>
+            <li><a href="{{ url_for('ver_reposicoes') }}">Ver Reposições</a></li>
+            <li><a href="{{ url_for('pesquisar') }}">Pesquisar Produto</a></li>
+            <li><a href="{{ url_for('remover') }}">Remover Produto</a></li>
+        </ul>
+    </div>
+
+</body>
+</html>

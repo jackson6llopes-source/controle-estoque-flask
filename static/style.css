@@ -1,0 +1,206 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Corpo */
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f4f6f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+/* Container principal */
+.container {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* Título */
+h1 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+    font-size: 22px;
+}
+
+/* Lista menu */
+.menu-list {
+    list-style: none;
+}
+
+/* Espaçamento */
+.menu-list li {
+    margin-bottom: 12px;
+}
+
+/* Botões estilo sistema */
+.menu-list a {
+    display: block;
+    text-decoration: none;
+    background: #1e293b;
+    color: #fff;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+    transition: 0.2s;
+}
+
+/* Hover elegante */
+.menu-list a:hover {
+    background: #334155;
+}
+
+/* Inputs padrão */
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+/* Botão padrão */
+button {
+    width: 100%;
+    padding: 12px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+/* Link voltar */
+a {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    text-decoration: none;
+    color: #2563eb;
+    font-size: 14px;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+    body {
+        padding: 15px;
+        align-items: flex-start;
+    }
+
+    .container {
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    h1 {
+        font-size: 18px;
+    }
+}
+/* Lista de reposições */
+.lista-reposicoes {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+/* Card de cada produto */
+.card {
+    background: #f9fafb;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+}
+
+/* Texto do card */
+.card p {
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+/* Mensagem vazia */
+.empty {
+    text-align: center;
+    color: #777;
+    margin-top: 10px;
+}
+/* Pesquisa */
+
+.titulo-resultado {
+    margin-top: 25px;
+    font-size: 18px;
+    color: #333;
+}
+
+
+.lista-resultados {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+/* Card dos produtos */
+
+.card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 15px;
+}
+
+
+.card p {
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+
+/* Quantidades */
+
+.estoque {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+
+.estoque span {
+    background: #ffffff;
+    padding: 8px;
+    border-radius: 6px;
+    text-align: center;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+
+/* Celular */
+
+@media(max-width:600px){
+
+    .estoque {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}

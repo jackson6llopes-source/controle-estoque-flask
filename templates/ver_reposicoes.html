@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reposições</title>
+
+    <!-- CSS externo -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Lista de Reposições</h1>
+
+        {% if reposicao %}
+            <div class="lista-reposicoes">
+                {% for item in reposicao %}
+                    <div class="card">
+                        <p><strong>SKU:</strong> {{ item.get('SKU', 'N/A') }}</p>
+                        <p>34: {{ item.get('34', 0) }}</p>
+                        <p>35: {{ item.get('35', 0) }}</p>
+                        <p>36: {{ item.get('36', 0) }}</p>
+                        <p>37: {{ item.get('37', 0) }}</p>
+                        <p>38: {{ item.get('38', 0) }}</p>
+                        <p>39: {{ item.get('39', 0) }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="empty">Nenhuma reposição encontrada.</p>
+        {% endif %}
+
+        <a href="{{ url_for('index') }}">Voltar ao Menu</a>
+    </div>
+
+</body>
+</html>

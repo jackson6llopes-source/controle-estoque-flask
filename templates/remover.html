@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Remover Estoque</title>
+
+    <!-- Link do CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>Remover do Estoque</h1>
+
+    <form method="POST">
+
+        <input type="text" name="sku" placeholder="Digite o SKU" required>
+
+        <div class="grid">
+            {% for i in range(34, 40) %}
+                <div class="campo">
+                    <label>{{ i }}</label>
+                    <input type="number" name="{{ i }}" value="0" min="0">
+                </div>
+            {% endfor %}
+        </div>
+
+        <button type="submit">Remover</button>
+
+        <a href="{{ url_for('index') }}" class="voltar">Voltar ao Menu</a>
+
+    </form>
+</div>
+
+</body>
+</html>

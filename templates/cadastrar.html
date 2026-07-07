@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Produto</title>
+
+    <!-- CSS externo -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Cadastrar Produto</h1>
+
+        <form action="/cadastrar" method="post">
+
+            <label for="sku">SKU:</label>
+            <input type="text" id="sku" name="sku" placeholder="Digite o SKU" required>
+
+            {% for i in range(34, 40) %}
+                <label for="{{ i }}">Tamanho {{ i }}:</label>
+                <input type="number" id="{{ i }}" name="{{ i }}" min="0" value="0">
+            {% endfor %}
+
+            <button type="submit">Cadastrar</button>
+        </form>
+
+        <a href="{{ url_for('index') }}">Voltar ao Menu</a>
+    </div>
+
+</body>
+</html>

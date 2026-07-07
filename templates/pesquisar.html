@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pesquisar SKU</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Pesquisar SKU</h1>
+
+    <form method="POST">
+
+        <label for="sku">SKU:</label>
+        <input
+            type="text"
+            id="sku"
+            name="sku"
+            placeholder="Digite o SKU"
+            required
+        >
+
+        <button type="submit">Pesquisar</button>
+
+    </form>
+
+
+    {% if resultados %}
+
+        <h2 class="titulo-resultado">Resultados:</h2>
+
+        <div class="lista-resultados">
+
+            {% for item in resultados %}
+
+            <div class="card">
+
+                <p>
+                    <strong>SKU:</strong>
+                    {{ item['SKU'] }}
+                </p>
+
+                <div class="estoque">
+
+                    {% for i in range(34, 40) %}
+
+                    <span>
+                        {{ i }}: {{ item[i|string] }}
+                    </span>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+    {% else %}
+
+        <p class="empty">
+            Nenhum resultado encontrado.
+        </p>
+
+    {% endif %}
+
+
+    <a href="{{ url_for('index') }}">
+        Voltar ao Menu
+    </a>
+
+</div>
+
+
+</body>
+</html>
