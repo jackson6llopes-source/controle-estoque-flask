@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reposições</title>
 
-    <!-- CSS externo -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
@@ -17,13 +16,13 @@
             <div class="lista-reposicoes">
                 {% for item in reposicao %}
                     <div class="card">
-                        <p><strong>SKU:</strong> {{ item.get('SKU', 'N/A') }}</p>
-                        <p>34: {{ item.get('34', 0) }}</p>
-                        <p>35: {{ item.get('35', 0) }}</p>
-                        <p>36: {{ item.get('36', 0) }}</p>
-                        <p>37: {{ item.get('37', 0) }}</p>
-                        <p>38: {{ item.get('38', 0) }}</p>
-                        <p>39: {{ item.get('39', 0) }}</p>
+                        <p><strong>SKU:</strong> {{ item.sku }}</p>
+                        <p>34: {{ item.t34 }}</p>
+                        <p>35: {{ item.t35 }}</p>
+                        <p>36: {{ item.t36 }}</p>
+                        <p>37: {{ item.t37 }}</p>
+                        <p>38: {{ item.t38 }}</p>
+                        <p>39: {{ item.t39 }}</p>
                     </div>
                 {% endfor %}
             </div>
@@ -35,4 +34,3 @@
     </div>
 
 </body>
-</html>

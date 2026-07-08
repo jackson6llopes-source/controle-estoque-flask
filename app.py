@@ -1,8 +1,29 @@
+from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, render_template, request, redirect, url_for
-import json
 import os
 
 app = Flask(__name__)
+url = os.environ.get('DATABASE_URL')
+
+if url:
+    url = url.replace("postgres://", "postgresql://")
+
+app.config['SQLALCHEMY_DATABASE_URI'] = url or 'sqlite:///banco.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+db = SQLAlchemy(app)
+
+
+# 🔹 MODELO DO BANCO
+class Produto(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    sku = db.Column(db.String(100), unique=True, nullable=False)
+    t34 = db.Column(db.Integer, default=0)
+    t35 = db.Column(db.Integer, default=0)
+    t36 = db.Column(db.Integer, default=0)
+    t37 = db.Column(db.Integer, default=0)
+    t38 = db.Column(db.Integer, default=0)
+    t39 = db.Column(db.Integer, default=0)
 
 
 @app.route('/')
@@ -10,134 +31,94 @@ def index():
     return render_template('index.html')
 
 
+# 🔹 CADASTRAR
 @app.route('/cadastrar', methods=['GET', 'POST'])
 def cadastrar():
     if request.method == 'POST':
-        # Padroniza o SKU (evita duplicidade tipo "a123" e "A123 ")
         sku = request.form['sku'].strip().upper()
 
-        produto = {'SKU': sku}
-
+        produto = {}
         for i in range(34, 40):
             produto[str(i)] = int(request.form[str(i)])
 
-        # Carrega JSON com segurança
-        if os.path.exists('estoque.json'):
-            try:
-                with open('estoque.json', 'r') as f:
-                    reposicao = json.load(f)
-            except:
-                reposicao = []
+        produto_existente = Produto.query.filter_by(sku=sku).first()
+
+        if produto_existente:
+            produto_existente.t34 += produto['34']
+            produto_existente.t35 += produto['35']
+            produto_existente.t36 += produto['36']
+            produto_existente.t37 += produto['37']
+            produto_existente.t38 += produto['38']
+            produto_existente.t39 += produto['39']
         else:
-            reposicao = []
+            novo_produto = Produto(
+                sku=sku,
+                t34=produto['34'],
+                t35=produto['35'],
+                t36=produto['36'],
+                t37=produto['37'],
+                t38=produto['38'],
+                t39=produto['39']
+            )
+            db.session.add(novo_produto)
 
-        # Controle para saber se encontrou o SKU
-        sku_encontrado = False
-
-        for item in reposicao:
-            # Padroniza também o SKU do JSON
-            if item['SKU'].strip().upper() == sku:
-                for i in range(34, 40):
-                    item[str(i)] += produto[str(i)]
-                sku_encontrado = True
-                break
-
-        # Só adiciona se NÃO existir
-        if not sku_encontrado:
-            reposicao.append(produto)
-
-        # Salva o JSON atualizado
-        with open('estoque.json', 'w') as f:
-            json.dump(reposicao, f, indent=4)
-
+        db.session.commit()
         return redirect(url_for('index'))
 
     return render_template('cadastrar.html')
 
 
-@app.route('/ver_reposicoes',)
+# 🔹 VER ESTOQUE
+@app.route('/ver_reposicoes')
 def ver_reposicoes():
-    if os.path.exists('estoque.json'):
-        with open('estoque.json', 'r') as f:
-            reposicao = json.load(f)
-            # Garantir que as chaves são strings
-            for item in reposicao:
-                # Cria um novo dicionário com chaves como strings
-                item_str = {}
-                for i in range(34, 40):
-                    item_str[str(i)] = item[str(i)]
-                item['SKU'] = item['SKU']
-                item.update(item_str)
-    else:
-        reposicao = []
+    produtos = Produto.query.all()
+    return render_template('ver_reposicoes.html', reposicao=produtos)
 
-    return render_template('ver_reposicoes.html', reposicao=reposicao)
 
+# 🔹 PESQUISAR
 @app.route('/pesquisar', methods=['GET', 'POST'])
 def pesquisar():
     resultados = []
 
     if request.method == 'POST':
-        termo = request.form['sku'].lower()
-
-        if os.path.exists('estoque.json'):
-            with open('estoque.json', 'r') as f:
-                reposicao = json.load(f)
-
-                # Filtra os SKUs que contêm o termo digitado
-                for item in reposicao:
-                    if termo in item['SKU'].lower():
-                        resultados.append(item)
+        termo = request.form['sku'].upper()
+        resultados = Produto.query.filter(Produto.sku.contains(termo)).all()
 
     return render_template('pesquisar.html', resultados=resultados)
 
+
+# 🔹 REMOVER
 @app.route('/remover', methods=['GET', 'POST'])
 def remover():
     if request.method == 'POST':
         sku = request.form['sku'].strip().upper()
 
-        # Quantidades que serão removidas
-        remover_qtd = {}
-        for i in range(34, 40):
-            remover_qtd[str(i)] = int(request.form[str(i)])
+        produto = Produto.query.filter_by(sku=sku).first()
 
-        # Carrega o JSON
-        if os.path.exists('estoque.json'):
-            try:
-                with open('estoque.json', 'r') as f:
-                    reposicao = json.load(f)
-            except:
-                reposicao = []
-        else:
-            reposicao = []
+        if produto:
+            for i in range(34, 40):
+                tamanho = f"t{i}"
+                remover_qtd = int(request.form[str(i)])
 
-        for item in reposicao:
-            if item['SKU'].strip().upper() == sku:
+                valor_atual = getattr(produto, tamanho)
 
-                # Remove as quantidades
-                for i in range(34, 40):
-                    tamanho = str(i)
+                if valor_atual >= remover_qtd:
+                    setattr(produto, tamanho, valor_atual - remover_qtd)
+                else:
+                    setattr(produto, tamanho, 0)
 
-                    if item[tamanho] >= remover_qtd[tamanho]:
-                        item[tamanho] -= remover_qtd[tamanho]
-                    else:
-                        item[tamanho] = 0
+            # 🔥 remove produto se tudo for zero
+            if all(getattr(produto, f"t{i}") == 0 for i in range(34, 40)):
+                db.session.delete(produto)
 
-                break
-
-        # 🔥 Remove o SKU se todos os tamanhos forem zero
-        reposicao = [
-            item for item in reposicao
-            if any(item[str(i)] > 0 for i in range(34, 40))
-        ]
-
-        # Salva o JSON atualizado
-        with open('estoque.json', 'w') as f:
-            json.dump(reposicao, f, indent=4)
+            db.session.commit()
 
         return redirect(url_for('index'))
 
     return render_template('remover.html')
+
+with app.app_context():
+    db.create_all()
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)
