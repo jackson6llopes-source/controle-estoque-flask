@@ -5,10 +5,7 @@ import os
 app = Flask(__name__)
 url = os.environ.get('DATABASE_URL')
 
-if url:
-    url = url.replace("postgres://", "postgresql://")
-
-app.config['SQLALCHEMY_DATABASE_URI'] = url or 'sqlite:///banco.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or 'sqlite:///banco.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
